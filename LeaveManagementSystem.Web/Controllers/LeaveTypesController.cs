@@ -135,8 +135,8 @@ namespace LeaveManagementSystem.Web.Controllers
                 return NotFound();
             }
 
-            var leaveType = await _context.LeaveTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var leaveType = _mapper.Map<LeaveTypeVM>(await _context.LeaveTypes
+                .FirstOrDefaultAsync(m => m.Id == id));
             if (leaveType == null)
             {
                 return NotFound();
