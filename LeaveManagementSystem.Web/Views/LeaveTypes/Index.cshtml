@@ -33,8 +33,8 @@
             </td>
             <td>
                 <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-pencil-alt"></i>Edit</a> 
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> 
-                <button data-id="@item.Id" class="btn btn-danger deleteBtn" type="button">Delete</button>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-info-circle"></i>Details</a>
+                    <button data-id="@item.Id" class="btn btn-danger deleteBtn" type="button"><i class="fas fa-trash-alt"></i>Delete</button>
             </td>
         </tr>
 }

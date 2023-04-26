@@ -4,6 +4,7 @@ using LeaveManagementSystem.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeaveManagementSystem.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230425133610_DBSeeds")]
+    partial class DBSeeds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,19 +109,17 @@ namespace LeaveManagementSystem.Web.Data.Migrations
                         {
                             Id = "4fbcdf44-11f3-496c-ada4-5d40dc997600",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e76760e6-4eb8-4c39-b1cc-5d1325816b7f",
+                            ConcurrencyStamp = "c96577b1-6046-4ff4-840f-877636508488",
                             Email = "Administrator@Email.ie",
-                            EmailConfirmed = true,
+                            EmailConfirmed = false,
                             Firstname = "System",
                             Lastname = "Admin",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINISTRATOR@EMAIL.IE",
-                            NormalizedUserName = "ADMINISTRATOR@EMAIL.IE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHXAJOWpl2823GnoRoJ/+BhL0M31QtksLKObpJ1ZCUe0/kAMxgXXm8Xg/0cGQDwqoA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGvvL2DFqnrTNOb6D9xAMtoPQ2A9ZsnEt3VU6gTrPjM7W1wljbEopN4etnJsU0t10Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2c97bb45-dfd0-416f-aae2-7a904702f6ec",
-                            TwoFactorEnabled = false,
-                            UserName = "Administrator@Email.ie"
+                            SecurityStamp = "b07d52a2-43d6-4da0-8964-8052e75589a3",
+                            TwoFactorEnabled = false
                         });
                 });
 
