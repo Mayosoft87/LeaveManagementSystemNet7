@@ -29,6 +29,7 @@ builder.Services.AddTransient<IEmailSender>(s => new EmailSender("LFVMAIL1", 25,
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 //Register the ILeaveTypeRepository
 builder.Services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
+builder.Services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
 
 //Create the Automapper Config
 builder.Services.AddAutoMapper(typeof(MapperConfig));

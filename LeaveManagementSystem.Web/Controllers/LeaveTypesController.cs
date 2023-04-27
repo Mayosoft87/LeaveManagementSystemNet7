@@ -22,12 +22,14 @@ namespace LeaveManagementSystem.Web.Controllers
         //Dependecy Injection
 
         private readonly IMapper _mapper;
+        private readonly ILeaveAllocationRepository _leaveAllocationRepository;
         private readonly ILeaveTypeRepository _leaveTypeRepository;
 
-        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository, IMapper mapper)
+        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository, IMapper mapper, ILeaveAllocationRepository leaveAllocationRepository)
         {
             _leaveTypeRepository = leaveTypeRepository;
             _mapper = mapper;
+            _leaveAllocationRepository = leaveAllocationRepository;
         }
 
         
@@ -119,6 +121,16 @@ namespace LeaveManagementSystem.Web.Controllers
         private async Task<bool> LeaveTypeExistsAsync(int id)
         {
           return await _leaveTypeRepository.Exists(id);
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AllocateLeave(int id)
+        {
+             await _leaveAllocationRepository.LeaveAllocation(id);
+             return RedirectToAction(nameof(Index));
         }
     }
 }
