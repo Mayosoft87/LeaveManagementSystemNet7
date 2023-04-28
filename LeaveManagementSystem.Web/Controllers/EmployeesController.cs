@@ -15,12 +15,14 @@ namespace LeaveManagementSystem.Web.Controllers
         private readonly UserManager<Employee> _userManager;
         private readonly IMapper _mapper;
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
+        private readonly ILeaveTypeRepository _leaveTypeRepository;
 
-        public EmployeesController(UserManager<Employee> userManager, IMapper mapper, ILeaveAllocationRepository leaveAllocationRepository)
+        public EmployeesController(UserManager<Employee> userManager, IMapper mapper, ILeaveAllocationRepository leaveAllocationRepository,ILeaveTypeRepository leaveTypeRepository)
         {
             _userManager = userManager;
             _mapper = mapper;
             _leaveAllocationRepository = leaveAllocationRepository;
+            _leaveTypeRepository = leaveTypeRepository;
         }
 
 
@@ -74,37 +76,26 @@ namespace LeaveManagementSystem.Web.Controllers
         // POST: EmployeesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> EditAllocation(int id, LeaveAllocationEditVM model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    if(await _leaveAllocationRepository.UpdateEmployeeAllocation(model))
+                    {
+                        return RedirectToAction(nameof(ViewAllocation), new { id = model.EmployeeId });
+                    }
+                }
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                ModelState.AddModelError(string.Empty, "An Error Has Ocurrend, Please contact your IT Department");
             }
+            model.Employee = _mapper.Map<EmployeeListVM>(await _userManager.FindByIdAsync(model.EmployeeId));
+            model.LeaveType = _mapper.Map<LeaveTypeVM>(await _leaveTypeRepository.GetAsync(model.LeaveTypeId));
+            return View(model);
         }
 
-        // GET: EmployeesController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: EmployeesController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
