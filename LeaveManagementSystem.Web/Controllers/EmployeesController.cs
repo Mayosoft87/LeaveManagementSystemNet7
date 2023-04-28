@@ -3,6 +3,7 @@ using LeaveManagementSystem.Web.Constants;
 using LeaveManagementSystem.Web.Contracts;
 using LeaveManagementSystem.Web.Data;
 using LeaveManagementSystem.Web.Models;
+using LeaveManagementSystem.Web.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -58,11 +59,17 @@ namespace LeaveManagementSystem.Web.Controllers
             }
         }
 
-        // GET: EmployeesController/Edit/5
-        public ActionResult Edit(int id)
+        // GET: EmployeesController/EditAllocation/5
+        public async Task<ActionResult> EditAllocation(int id)
         {
-            return View();
+            var model = await _leaveAllocationRepository.GetEmployeeAllocation(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            return View(model);
         }
+    
 
         // POST: EmployeesController/Edit/5
         [HttpPost]

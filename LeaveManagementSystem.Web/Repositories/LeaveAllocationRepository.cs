@@ -15,9 +15,7 @@ namespace LeaveManagementSystem.Web.Repositories
         private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly IMapper _mapper;
 
-        public LeaveAllocationRepository(ApplicationDbContext context,
-            UserManager<Employee> userManager,
-            ILeaveTypeRepository leaveTypeRepository, IMapper mapper ) : base(context)
+        public LeaveAllocationRepository(ApplicationDbContext context,UserManager<Employee> userManager, ILeaveTypeRepository leaveTypeRepository, IMapper mapper ) : base(context)
         {
             _context = context;
             _userManager = userManager;
@@ -43,6 +41,23 @@ namespace LeaveManagementSystem.Web.Repositories
             return employeeAllocationMode;
 
 
+        }
+
+        public async Task<LeaveAllocationEditVM> GetEmployeeAllocation(int id)
+        {
+            var allocation = await _context.LeaveAllocations
+                .Include(q => q.LeaveType)
+                .FirstOrDefaultAsync(q=>q.Id==id);
+            if (allocation == null)
+            {
+                return null;
+            }
+            var employee = await _userManager.FindByIdAsync(allocation.EmployeeId);
+
+            var model = _mapper.Map<LeaveAllocationEditVM>(allocation);
+            model.Employee = _mapper.Map<EmployeeListVM>(await _userManager.FindByIdAsync(allocation.EmployeeId));
+
+            return model;
         }
 
         public async Task LeaveAllocation(int leaveTypeId)
