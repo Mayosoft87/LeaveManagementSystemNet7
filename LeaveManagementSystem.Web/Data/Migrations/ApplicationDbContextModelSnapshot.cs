@@ -106,7 +106,7 @@ namespace LeaveManagementSystem.Web.Data.Migrations
                         {
                             Id = "4fbcdf44-11f3-496c-ada4-5d40dc997600",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5594edf5-fedd-467d-ad85-bde4b2bfaffc",
+                            ConcurrencyStamp = "d098bbd6-ff1d-4600-9101-fb60bb8702c5",
                             Email = "Administrator@Email.ie",
                             EmailConfirmed = true,
                             Firstname = "System",
@@ -114,9 +114,9 @@ namespace LeaveManagementSystem.Web.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMINISTRATOR@EMAIL.IE",
                             NormalizedUserName = "ADMINISTRATOR@EMAIL.IE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFwH6G4npvEfWR+lX9qKObiWSkpeHIn3oCzr3E7UJQ/mDx7PsVF9YZ0DEybjthEG5Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGba+n5W3BTmMfXKIhWjYovdg1K3KKQvLCpomDmVmM8sN/zW/mSLyjpuIjS/OsWgFw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9eb23702-b3e7-4947-a4ed-49c27a03b445",
+                            SecurityStamp = "0017eb3d-eaa1-4579-bca0-35dcd359d458",
                             TwoFactorEnabled = false,
                             UserName = "Administrator@Email.ie"
                         });
@@ -154,6 +154,52 @@ namespace LeaveManagementSystem.Web.Data.Migrations
                     b.HasIndex("LeaveTypeId");
 
                     b.ToTable("LeaveAllocations");
+                });
+
+            modelBuilder.Entity("LeaveManagementSystem.Web.Data.LeaveRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool?>("Approved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Cancelled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateRequested")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LeaveTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RequestComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RequestingEmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeaveTypeId");
+
+                    b.ToTable("leaveRequests");
                 });
 
             modelBuilder.Entity("LeaveManagementSystem.Web.Data.LeaveType", b =>
@@ -341,6 +387,17 @@ namespace LeaveManagementSystem.Web.Data.Migrations
                 });
 
             modelBuilder.Entity("LeaveManagementSystem.Web.Data.LeaveAllocation", b =>
+                {
+                    b.HasOne("LeaveManagementSystem.Web.Data.LeaveType", "LeaveType")
+                        .WithMany()
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LeaveType");
+                });
+
+            modelBuilder.Entity("LeaveManagementSystem.Web.Data.LeaveRequest", b =>
                 {
                     b.HasOne("LeaveManagementSystem.Web.Data.LeaveType", "LeaveType")
                         .WithMany()

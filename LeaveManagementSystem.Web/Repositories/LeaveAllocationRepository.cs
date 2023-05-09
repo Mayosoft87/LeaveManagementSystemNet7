@@ -97,5 +97,11 @@ namespace LeaveManagementSystem.Web.Repositories
             await UpdateAsync(leaveAllocation);
             return true;
         }
+
+        public async Task<LeaveAllocation> GetEmployeeAllocation(string employeeId, int Id)
+        {
+            return await _context.LeaveAllocations.FirstOrDefaultAsync(q => q.EmployeeId == employeeId && q.Id == Id);
+           
+        }
     }
 }

@@ -20,6 +20,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<Employee>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddHttpContextAccessor();
 
 
 builder.Services.AddTransient<IEmailSender>(s => new EmailSender("LFVMAIL1", 25, "noreply@leavemanagement.com"));
@@ -27,9 +28,10 @@ builder.Services.AddTransient<IEmailSender>(s => new EmailSender("LFVMAIL1", 25,
 //Register the Generic Repository
 //AddScoped --The connection will be On for the tiem that the user uses
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-//Register the ILeaveTypeRepository
+//Register the Contracts and Repositories
 builder.Services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
 builder.Services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
+builder.Services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
 
 //Create the Automapper Config
 builder.Services.AddAutoMapper(typeof(MapperConfig));

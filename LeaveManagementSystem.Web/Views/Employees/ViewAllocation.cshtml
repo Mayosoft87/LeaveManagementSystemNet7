@@ -58,8 +58,8 @@
             <li class="list-group-item">
                 <div class="row">
                     <div class="col"><h6>@allocation.LeaveType.Name</h6></div>
-                    <div class="col"> <span class="badge rounded-pill bg-success ">Allocated Days <span class="badge bg-secondary">@allocation.NumberOfDays</span></span></div>
-                    <div class="col"> <span class="badge rounded-pill bg-warning text-dark">Remaining Days <span class="badge bg-secondary">@allocation.LeaveType.DefaultDays</span></span></div>
+                    <div class="col"> <span class="badge rounded-pill bg-success ">Allocated Days <span class="badge bg-secondary"></span>@allocation.LeaveType.DefaultDays</span></div>
+                    <div class="col"> <span class="badge rounded-pill bg-warning text-dark">Remaining Days <span class="badge bg-secondary">@allocation.NumberOfDays</span></span></div>
                     <div class="col"><a class="btn btn-info" asp-action="EditAllocation" asp-route-id="@allocation.Id"><i class="fas fa-pencil-alt"></i>Edit Allocation</a></div>
                 </div>
             </li>

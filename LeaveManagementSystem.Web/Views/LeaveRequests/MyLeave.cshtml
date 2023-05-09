@@ -1,0 +1,229 @@
+﻿@model EmployeeLeaveRequestsViewVM
+
+@{
+    ViewData["Title"] = "My Leave";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h4>My Leave Allocations</h4>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col">Leave Name</div>
+                <div class="col">Total Allocation Days</div>
+                <div class="col">Remaining Days</div>
+            </div>
+        </li>
+        @foreach (var allocation in Model.LeaveAllocations)
+        {
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col"><h6>@allocation.LeaveType.Name</h6></div>
+                    <div class="col"> <span class="badge rounded-pill bg-success ">Allocated Days <span class="badge bg-secondary">@allocation.LeaveType.DefaultDays</span></span></div>
+                    <div class="col"> <span class="badge rounded-pill bg-warning text-dark">Remaining Days <span class="badge bg-secondary">@allocation.NumberOfDays</span></span></div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+<hr />
+<br/>
+<br/>
+<H2>Open Requests</H2>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].LeaveType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].DateRequested)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].Approved)
+            </th>
+      
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].RequestComments)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LeaveRequests)
+        {
+            if (item.Cancelled == false && item.Approved == null)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                   
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateRequested)
+                    </td>
+                    <td>
+                        @if (item.Cancelled)
+                        {
+                            <span class="badge rounded-pill bg-secondary ">Cancelled</span>
+                        }
+                        else if (item.Approved == null)
+                        {
+                            <span class="badge rounded-pill bg-warning ">Pending</span>
+                        }
+                        else if (item.Approved.Value)
+                        {
+                            <span class="badge rounded-pill bg-success ">Approved</span>
+                        }
+                        else if (item.Approved.Value)
+                        {
+                            <span class="badge rounded-pill bg-danger ">Rejected</span>
+                        }
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequestComments)
+                    </td>
+                    <td>
+
+                        <form id="cancelForm" asp-action="Cancel">
+                            <input type="hidden" id="leaveRequestId" name="id" />
+                            <button data-id="@item.Id" class="btn btn-danger cancelBtn" type="button"><i class="fas fa-trash-alt"></i>Cancel</button>
+                        </form>
+                        
+                    </td>
+                </tr>
+
+            }
+            
+        }
+    </tbody>
+</table>
+<hr />
+<br/>
+<br/>
+<H2>History</H2>
+<br />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].LeaveType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].DateRequested)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].Approved)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].RequestComments)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LeaveRequests)
+        {
+            if ( item.Approved != null || item.Cancelled==true) 
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateRequested)
+                    </td>
+                    <td>
+                        @if (item.Cancelled)
+                        {
+                            <span class="badge rounded-pill bg-secondary ">Cancelled</span>
+                        }
+                        else if (item.Approved == null)
+                        {
+                            <span class="badge rounded-pill bg-warning ">Pending</span>
+                        }
+                        else if (item.Approved.Value)
+                        {
+                            <span class="badge rounded-pill bg-success ">Approved</span>
+                        }
+                        else if (item.Approved.Value)
+                        {
+                            <span class="badge rounded-pill bg-danger ">Rejected</span>
+                        }
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequestComments)
+                    </td>
+                </tr>
+
+            }
+
+        }
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+@section Scripts{
+    <script>
+        $(function () {
+
+
+            $('.cancelBtn').click(function (e) {
+                swal({
+                    title: "Are you sure?",
+                    text: "Are you sure you want to cancel your request?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((confirm) => {
+                    if (confirm) {
+                        var btn = $(this);
+                        var id = btn.data("id");
+                        $('#leaveRequestId').val(id);
+                        $('#cancelForm').submit();
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+
+
+
