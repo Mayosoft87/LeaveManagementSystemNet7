@@ -88,10 +88,12 @@ namespace LeaveManagementSystem.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var totalDays = (model.StartDate - model.EndDate).TotalDays;
-                    //model.TotalDays = Math.Abs(totalDays.);
-                    await _leaveRequestRepository.CreateLeaveRequest(model);
-                    return RedirectToAction(nameof(MyLeave));
+                    var isValidRequest = await _leaveRequestRepository.CreateLeaveRequest(model);
+                    if(isValidRequest == true) 
+                    {
+                        return RedirectToAction(nameof(MyLeave));
+                    }
+                    ModelState.AddModelError(string.Empty, "You have exceeded your allocation with this request");
                 }
             }
             catch (Exception ex)

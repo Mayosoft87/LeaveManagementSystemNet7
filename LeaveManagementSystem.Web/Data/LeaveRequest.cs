@@ -11,7 +11,6 @@ namespace LeaveManagementSystem.Web.Data
         public string? RequestComments { get; set; }
         public bool? Approved { get; set; }
         public bool Cancelled { get; set; }
-        public int TotalDays {get; set; }
         //Relationship with LeaveType
         [ForeignKey("LeaveTypeId")]
         public LeaveType LeaveType { get; set; }
