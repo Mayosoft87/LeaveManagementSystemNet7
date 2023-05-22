@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LeaveManagementSystem.AppLogic.Contracts;
+using LeaveManagementSystem.Common;
+using LeaveManagementSystem.Common.Models;
+using LeaveManagementSystem.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using LeaveManagementSystem.Web.Data;
-using LeaveManagementSystem.Web.Models;
-using LeaveManagementSystem.Web.Contracts;
-using Microsoft.AspNetCore.Authorization;
-using LeaveManagementSystem.Web.Constants;
 
 namespace LeaveManagementSystem.Web.Controllers
 {

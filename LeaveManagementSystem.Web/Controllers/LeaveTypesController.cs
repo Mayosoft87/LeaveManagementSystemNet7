@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using LeaveManagementSystem.Web.Data;
+using LeaveManagementSystem.Data;
 using AutoMapper;
-using LeaveManagementSystem.Web.Models;
-using LeaveManagementSystem.Web.Contracts;
-using LeaveManagementSystem.Web.Repositories;
+using LeaveManagementSystem.Common.Models;
+using LeaveManagementSystem.AppLogic.Contracts;
+using LeaveManagementSystem.AppLogic.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using LeaveManagementSystem.Web.Constants;
+using LeaveManagementSystem.Common;
+using System.Diagnostics.CodeAnalysis;
 
 namespace LeaveManagementSystem.Web.Controllers
 {
@@ -23,13 +24,16 @@ namespace LeaveManagementSystem.Web.Controllers
 
         private readonly IMapper _mapper;
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
+        private readonly ILogger<LeaveTypesController> _logger;
         private readonly ILeaveTypeRepository _leaveTypeRepository;
 
-        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository, IMapper mapper, ILeaveAllocationRepository leaveAllocationRepository)
+        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository, IMapper mapper, ILeaveAllocationRepository leaveAllocationRepository,
+            ILogger<LeaveTypesController> logger)
         {
             _leaveTypeRepository = leaveTypeRepository;
             _mapper = mapper;
             _leaveAllocationRepository = leaveAllocationRepository;
+            _logger = logger;
         }
 
         
@@ -100,10 +104,31 @@ namespace LeaveManagementSystem.Web.Controllers
             {
                 return NotFound();
             }
+            var leaveType = await _leaveTypeRepository.GetAsync(id);
+
+            if (leaveType == null)
 
             if (ModelState.IsValid)
             {
-                await _leaveTypeRepository.UpdateAsync(_mapper.Map<LeaveType>(leaveTypeVM));
+                    try
+                    {
+                        _mapper.Map(leaveType, leaveTypeVM);
+                        await _leaveTypeRepository.UpdateAsync(leaveType);
+                    }
+                    catch(DbUpdateConcurrencyException ex)
+                    {
+                        if (!await _leaveTypeRepository.Exists(leaveTypeVM.Id))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            _logger.LogError(ex, "Error Edit LeaveType Edit");
+                            throw;
+                        }
+                    }
+               
+              
             }
             return View(leaveTypeVM);
         }

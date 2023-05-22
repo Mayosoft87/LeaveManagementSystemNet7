@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
-using LeaveManagementSystem.Web.Constants;
-using LeaveManagementSystem.Web.Contracts;
-using LeaveManagementSystem.Web.Data;
-using LeaveManagementSystem.Web.Models;
-using LeaveManagementSystem.Web.Repositories;
+using LeaveManagementSystem.Common;
+using LeaveManagementSystem;
+using LeaveManagementSystem.Data;
+using LeaveManagementSystem.Common.Models;
+using LeaveManagementSystem.AppLogic.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using LeaveManagementSystem.AppLogic.Contracts;
 
 namespace LeaveManagementSystem.Web.Controllers
 {
